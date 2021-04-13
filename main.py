@@ -2,7 +2,7 @@ import numpy as np
 
 # Each row is a training example, each column is a feature  [X1, X2, X3]
 X = np.array(([0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 1]), dtype=float)
-y = np.array(([0], [1], [1], [0]), dtype=float)
+Y = np.array(([0], [1], [1], [0]), dtype=float)
 
 
 # Define useful functions
@@ -44,14 +44,14 @@ class NeuralNetwork:
         self.backprop()
 
 
-NN = NeuralNetwork(X, y)
+NN = NeuralNetwork(X, Y)
 for i in range(1500):  # trains the NN 1,000 times
     if i % 100 == 0:
         print("for iteration # " + str(i) + "\n")
         print("Input : \n" + str(X))
-        print("Actual Output: \n" + str(y))
+        print("Actual Output: \n" + str(Y))
         print("Predicted Output: \n" + str(NN.feedforward()))
-        print("Loss: \n" + str(np.mean(np.square(y - NN.feedforward()))))  # mean sum squared loss
+        print("Loss: \n" + str(np.mean(np.square(Y - NN.feedforward()))))  # mean sum squared loss
         print("\n")
 
-    NN.train(X, y)
+    NN.train(X, Y)
