@@ -45,7 +45,7 @@ class NeuralNetwork:
 
 
 NN = NeuralNetwork(X, Y)
-for i in range(1500):  # trains the NN 1,000 times
+for i in range(2001):  # trains the NN 1,000 times
     if i % 100 == 0:
         print("for iteration # " + str(i) + "\n")
         print("Input : \n" + str(X))
