@@ -17,8 +17,17 @@ def make_prediction(input_vector, weights_param, bias_param):
 
 
 prediction = make_prediction(inputVector, weights, bias)
+
 target = 0  # The target output
 mse = np.square(prediction - target)  # Calculate the Mean Squared Error(MSE)
-print(f"Prediction: {prediction}; error: {mse}")
-derivative = 2 * (prediction - target)  # Derivative will be used to determine how to adjust the weights.
+print(f"Prediction before adjustment: {prediction}; Error: {mse}")
+
+# Derivative will be used to determine how to adjust the weights.
+derivative = 2 * (prediction - target)
 print(f"The derivative is {derivative}")
+
+# Change the weights according to the derivative.
+weights -= derivative
+prediction = make_prediction(inputVector, weights, bias)
+mse = np.square(prediction - target)
+print(f"Prediction after adjustment: {prediction}; Error: {mse}")
