@@ -1,57 +1,10 @@
-import numpy as np
+input_vector = [1.72, 1.23]
+weights_1 = [1.26, 0]
+weights_2 = [2.17, 0.32]
 
-# Each row is a training example, each column is a feature  [X1, X2, X3]
-X = np.array(([0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 1]), dtype=float)
-Y = np.array(([0], [1], [0.5], [0]), dtype=float)  # The actual outputs. Must be between 0 and 1.
+# Computing the dot product of input_vector and weights_1
+first_indexes_mult = input_vector[0] * weights_1[0]
+second_indexes_mult = input_vector[1] * weights_1[1]
+dot_product_1 = first_indexes_mult + second_indexes_mult
 
-
-# Define useful functions
-
-# Activation function
-def sigmoid(t):
-    return 1 / (1 + np.exp(-t))
-
-
-# Derivative of sigmoid
-def sigmoid_derivative(p):
-    return p * (1 - p)
-
-
-# Class definition
-class NeuralNetwork:
-    def __init__(self, x, y):
-        self.input = x
-        self.weights1 = np.random.rand(self.input.shape[1], 4)  # considering we have 4 nodes in the hidden layer
-        self.weights2 = np.random.rand(4, 1)
-        self.y = y
-        self.output = np.zeros(y.shape)
-
-    def feedforward(self):
-        self.layer1 = sigmoid(np.dot(self.input, self.weights1))
-        self.layer2 = sigmoid(np.dot(self.layer1, self.weights2))
-        return self.layer2
-
-    def backprop(self):
-        d_weights2 = np.dot(self.layer1.T, 2 * (self.y - self.output) * sigmoid_derivative(self.output))
-        d_weights1 = np.dot(self.input.T, np.dot(2 * (self.y - self.output) * sigmoid_derivative(self.output),
-                                                 self.weights2.T) * sigmoid_derivative(self.layer1))
-
-        self.weights1 += d_weights1
-        self.weights2 += d_weights2
-
-    def train(self, x, y):
-        self.output = self.feedforward()
-        self.backprop()
-
-
-NN = NeuralNetwork(X, Y)
-for i in range(2001):  # trains the NN 1,000 times
-    if i % 100 == 0:
-        print("for iteration # " + str(i) + "\n")
-        print("Input : \n" + str(X))
-        print("Actual Output: \n" + str(Y))
-        print("Predicted Output: \n" + str(NN.feedforward()))
-        print("Loss: \n" + str(np.mean(np.square(Y - NN.feedforward()))))  # mean sum squared loss
-        print("\n")
-
-    NN.train(X, Y)
+print(f"The dot product is: {dot_product_1}")
