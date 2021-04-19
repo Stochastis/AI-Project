@@ -2,7 +2,7 @@ import numpy as np
 
 # Each row is a training example, each column is a feature  [X1, X2, X3]
 X = np.array(([0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 1]), dtype=float)
-Y = np.array(([0], [1], [1], [0]), dtype=float)
+Y = np.array(([0], [1], [0.5], [0]), dtype=float)  # The actual outputs. Must be between 0 and 1.
 
 
 # Define useful functions
@@ -39,7 +39,7 @@ class NeuralNetwork:
         self.weights1 += d_weights1
         self.weights2 += d_weights2
 
-    def train(self, X, y):
+    def train(self, x, y):
         self.output = self.feedforward()
         self.backprop()
 
