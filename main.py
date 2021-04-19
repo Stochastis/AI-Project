@@ -1,9 +1,9 @@
 import numpy as np
 
 # Wrapping the vectors in NumPy arrays
-inputVector = np.array([2, 1.5])
-weights = np.array([1.45, -0.66])
-bias = np.array([0.0])
+inputVector = np.array([2, 1.5])  # All points of data are a value in this vector.
+weights = np.array([1.45, -0.66])  # Same size as inputVector.
+bias = np.array([0.0])  # Same size as inputVector.
 
 
 def sigmoid(x):
@@ -26,8 +26,8 @@ print(f"Prediction before adjustment: {prediction}; Error: {mse}")
 derivative = 2 * (prediction - target)
 print(f"The derivative is {derivative}")
 
-# Change the weights according to the derivative.
-weights -= derivative
+# Change the weights according to the derivative and print out the error calculation.
+weights -= derivative  # TODO: Apply learning rate / alpha
 prediction = make_prediction(inputVector, weights, bias)
 mse = np.square(prediction - target)
 print(f"Prediction after adjustment: {prediction}; Error: {mse}")
