@@ -17,6 +17,6 @@ def make_prediction(input_vector, weights_param, bias_param):
 
 
 prediction = make_prediction(inputVector, weights, bias)
-target = 0
-mse = np.square(prediction - target)
+target = 0  # The target output
+mse = np.square(prediction - target)  # Calculate the Mean Squared Error(MSE)
 print(f"Prediction: {prediction}; error: {mse}")
