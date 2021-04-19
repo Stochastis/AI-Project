@@ -1,7 +1,7 @@
 import numpy as np
 
 # Wrapping the vectors in NumPy arrays
-inputVector = np.array([1.66, 1.56])
+inputVector = np.array([2, 1.5])
 weights1 = np.array([1.45, -0.66])
 bias = np.array([0.0])
 
