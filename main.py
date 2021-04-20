@@ -1,44 +1,51 @@
-layer1 = np.dot(inputVector, weights) + bias
 import numpy as np
 
-# Wrapping the vectors in NumPy arrays
-inputVector = np.array([2, 1.5])  # All points of data are a value in this vector.
-weights = np.array([1.45, -0.66])  # Same size as inputVector.
-bias = np.array([0.0])  # Same size as inputVector.
 
-
-def sigmoid(x):
+def _sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 
-def sigmoid_deriv(x):
-    return sigmoid(x) * (1 - sigmoid(x))
+def _sigmoid_derivative(x):
+    return _sigmoid(x) * (1 - _sigmoid(x))
 
 
-def make_prediction(input_vector, weights_param, bias_param):
-    layer1 = np.dot(input_vector, weights_param) + bias_param
-    layer2 = sigmoid(layer1)
-    return layer2
+class NeuralNetwork:
+    def __init__(self, learning_rate):
+        # Initialize random values for the weights and bias and set the learning rate.
+        self.weights = np.array([np.random.randn(), np.random.randn()])
+        self.bias = np.random.randn()
+        self.learning_rate = learning_rate
 
+    def predict(self, input_vector):
+        # Layer 1 is the difference between the input and the weights plus the bias.
+        # Layer 2 is the activation layer. It runs layer 1 through a sigmoid function.
+        layer_1 = np.dot(input_vector, self.weights) + self.bias
+        layer_2 = _sigmoid(layer_1)
+        prediction = layer_2
+        return prediction
 
-prediction = make_prediction(inputVector, weights, bias)
+    def _compute_gradients(self, input_vector, target):
+        # Makes a prediction and calculates the derivatives.
+        layer_1 = np.dot(input_vector, self.weights) + self.bias
+        layer_2 = _sigmoid(layer_1)
+        prediction = layer_2
 
-target = 0  # The target output
-mse = np.square(prediction - target)  # Calculate the Mean Squared Error(MSE)
-print(f"Prediction before adjustment: {prediction}; Error: {mse}")
+        derror_dprediction = 2 * (prediction - target)  # Derivative of error function.
+        dprediction_dlayer1 = _sigmoid_derivative(layer_1)  # Derivative of sigmoid function.
+        dlayer1_dbias = 1  # Derivative of bias.
+        dlayer1_dweights = (0 * self.weights) + (1 * input_vector)
 
-# Derivative will be used to determine how to adjust the weights.
-derivative = 2 * (prediction - target)
-print(f"The derivative is {derivative}")
+        derror_dbias = (
+                derror_dprediction * dprediction_dlayer1 * dlayer1_dbias
+        )
+        derror_dweights = (
+                derror_dprediction * dprediction_dlayer1 * dlayer1_dweights
+        )
 
-# Change the weights according to the derivative and print out the error calculation.
-weights -= derivative  # TODO: Apply learning rate / alpha
-prediction = make_prediction(inputVector, weights, bias)
-mse = np.square(prediction - target)
-print(f"Prediction after adjustment: {prediction}; Error: {mse}")
+        return derror_dbias, derror_dweights
 
-# Take the partial derivaties and multiply to find the derivative of the error with respect to the bias.
-derror_dprediction = 2 * (prediction - target)
-dprediction_dlayer1 = sigmoid_deriv(layer1)
-dlayer1_dbias = 1
-derror_dweights = (derror_dprediction * dprediction_dlayer1 * dlayer1_dbias)
+    def _update_parameters(self, derror_dbias, derror_dweights):
+        self.bias = self.bias - (derror_dbias * self.learning_rate)
+        self.weights = self.weights - (
+                derror_dweights * self.learning_rate
+        )
