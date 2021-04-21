@@ -10,16 +10,21 @@ def _sigmoid_derivative(x):
 
 
 class NeuralNetwork:
-    def __init__(self, learning_rate):
+    def __init__(self, learning_rate_p):
         # Initialize random values for the weights and bias and set the learning rate.
         self.weights = np.array([np.random.randn(), np.random.randn()])
         self.bias = np.random.randn()
-        self.learning_rate = learning_rate
+        self.learning_rate = learning_rate_p
 
     def predict(self, input_vector):
         # Layer 1 is the difference between the input and the weights plus the bias.
         # Layer 2 is the activation layer. It runs layer 1 through a sigmoid function.
         layer_1 = np.dot(input_vector, self.weights) + self.bias
+        print(f'DEBUG: input_vector = {input_vector}')
+        print(f'DEBUG: self.weights = {self.weights}')
+        print(f'DEBUG: np.dot(input_vector, self.weights) = {np.dot(input_vector, self.weights)}')
+        print(f'DEBUG: self.bias = {self.bias}')
+        print(f'DEBUG: layer_1 = {layer_1}')
         layer_2 = _sigmoid(layer_1)
         prediction = layer_2
         return prediction
@@ -49,3 +54,8 @@ class NeuralNetwork:
         self.weights = self.weights - (
                 derror_dweights * self.learning_rate
         )
+
+
+learning_rate = 0.1
+neural_network = NeuralNetwork(learning_rate)
+print(f'DEBUG: prediction = {neural_network.predict([1, 2])}')
