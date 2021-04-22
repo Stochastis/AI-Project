@@ -51,14 +51,14 @@ class NeuralNetwork:
                 derror_dweights * self.learning_rate
         )
 
-    def train(self, input_vectors, targets, iterations):
+    def train(self, _input_vectors, _targets, iterations):
         cumulative_errors = []
         for current_iteration in range(iterations):
             # Pick a data instance at random.
-            random_data_index = np.random.randint(len(input_vectors))
+            random_data_index = np.random.randint(len(_input_vectors))
 
-            input_vector = input_vectors[random_data_index]
-            target = targets[random_data_index]
+            input_vector = _input_vectors[random_data_index]
+            target = _targets[random_data_index]
 
             # Compute the gradients and update the weights.
             derror_dbias, derror_dweights = self._compute_gradients(input_vector, target)
@@ -69,9 +69,9 @@ class NeuralNetwork:
             if current_iteration % 100 == 0:
                 cumulative_error = 0
                 # Loop through all the instances to measure the error.
-                for data_instance_index in range(len(input_vectors)):
-                    data_point = input_vectors[data_instance_index]
-                    target = targets[data_instance_index]
+                for data_instance_index in range(len(_input_vectors)):
+                    data_point = _input_vectors[data_instance_index]
+                    target = _targets[data_instance_index]
 
                     prediction = self.predict(data_point)
                     error = np.square(prediction - target)
@@ -82,11 +82,14 @@ class NeuralNetwork:
         return cumulative_errors
 
 
-input_vectors = np.array([[3, 1.5], [2, 1], [4, 1.5], [3, 4], [3.5, 0.5], [2, 0.5], [5.5, 1], [1, 1]])
-targets = np.array([0, 1, 0, 1, 0, 1, 1, 0])
+input_vectors = np.array(
+    [[5, 3], [0, 3], [5, 4], [9, 0], [-5, -10], [6, 7], [4, 5], [7, 0], [0, 5], [6, 5], [0, 3], [89, 4], [9, 34],
+     [76, 245]])
+targets = np.array([1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0])
 learning_rate = 0.1
 neural_network = NeuralNetwork(learning_rate)
-training_error = neural_network.train(input_vectors, targets, 10000)
+training_error = neural_network.train(input_vectors, targets, 1000)
+print(neural_network.predict([99, 5]))
 
 plt.plot(training_error)
 plt.xlabel("Iterations")
