@@ -20,11 +20,6 @@ class NeuralNetwork:
         # Layer 1 is the difference between the input and the weights plus the bias.
         # Layer 2 is the activation layer. It runs layer 1 through a sigmoid function.
         layer_1 = np.dot(input_vector, self.weights) + self.bias
-        print(f'DEBUG: input_vector = {input_vector}')
-        print(f'DEBUG: self.weights = {self.weights}')
-        print(f'DEBUG: np.dot(input_vector, self.weights) = {np.dot(input_vector, self.weights)}')
-        print(f'DEBUG: self.bias = {self.bias}')
-        print(f'DEBUG: layer_1 = {layer_1}')
         layer_2 = _sigmoid(layer_1)
         prediction = layer_2
         return prediction
@@ -54,6 +49,36 @@ class NeuralNetwork:
         self.weights = self.weights - (
                 derror_dweights * self.learning_rate
         )
+
+    def train(self, input_vectors, targets, iterations):
+        cumulative_errors = []
+        for current_iteration in range(iterations):
+            # Pick a data instance at random.
+            random_data_index = np.random.randint(len(input_vectors))
+
+            input_vector = input_vectors[random_data_index]
+            target = targets[random_data_index]
+
+            # Compute the gradients and update the weights.
+            derror_dbias, derror_dweights = self._compute_gradients(input_vector, target)
+
+            self._update_parameters(derror_dbias, derror_dweights)
+
+            # Measure the cumulative error for all the instances.
+            if current_iteration % 100 == 0:
+                cumulative_error = 0
+                # Loop through all the instances to measure the error.
+                for data_instance_index in range(len(input_vectors)):
+                    data_point = input_vectors[data_instance_index]
+                    target = targets[data_instance_index]
+
+                    prediction = self.predict(data_point)
+                    error = np.square(prediction - target)
+
+                    cumulative_error += error
+                cumulative_errors.append(cumulative_error)
+
+        return cumulative_errors
 
 
 learning_rate = 0.1
