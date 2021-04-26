@@ -83,7 +83,10 @@ class NeuralNetwork:
         return cumulative_errors
 
 
-book = xlrd.open_workbook("dataWorkbook.xlsx")
+book = xlrd.open_workbook("dataWorkbook.xls")
+sheet = book.sheet_by_name("tracks")
+data = [[sheet.cell_value(r, c) for c in range(sheet.ncols)] for r in range(sheet.nrows)]
+print(data)
 input_vectors = [[4, 5], [4, 6], [5, 4], [3, 7], [7, 3], [8, 4], [6, 4], [0, 9], [8, 0], [4, 6], [8, 4], [8, 9], [7, 3],
                  [5, 4], [7, 8], [8, 9], [9, 6], [0, 4], [7, 0], [0, 0], [5, 5]]
 targets = [0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1]
