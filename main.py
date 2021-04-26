@@ -82,18 +82,13 @@ class NeuralNetwork:
         return cumulative_errors
 
 
-input_vectors = np.empty((100, 2))
-targets = np.empty(100)
-for i in range(100):
-    input_vectors[i] = [np.random.randint(100)]
-    if np.gcd(input_vectors[i][0], input_vectors[i][1]) != 1:
-        targets[i] = 0
-    else:
-        targets[i] = 1
+input_vectors = [[4, 5], [4, 6], [5, 4], [3, 7], [7, 3], [8, 4], [6, 4], [0, 9], [8, 0], [4, 6], [8, 4], [8, 9], [7, 3],
+                 [5, 4], [7, 8], [8, 9], [9, 6], [0, 4], [7, 0], [0, 0], [5, 5]]
+targets = [0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1]
 learning_rate = 0.1
 neural_network = NeuralNetwork(learning_rate)
 training_error = neural_network.train(input_vectors, targets, 100000)
-print(neural_network.predict([10, 5]))
+print(neural_network.predict([6, 5]))
 
 plt.plot(training_error)
 plt.xlabel("Iterations")
