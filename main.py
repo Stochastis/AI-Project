@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import xlrd
 
 
 def _sigmoid(x):
@@ -82,6 +83,7 @@ class NeuralNetwork:
         return cumulative_errors
 
 
+book = xlrd.open_workbook("dataWorkbook.xlsx")
 input_vectors = [[4, 5], [4, 6], [5, 4], [3, 7], [7, 3], [8, 4], [6, 4], [0, 9], [8, 0], [4, 6], [8, 4], [8, 9], [7, 3],
                  [5, 4], [7, 8], [8, 9], [9, 6], [0, 4], [7, 0], [0, 0], [5, 5]]
 targets = [0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1]
