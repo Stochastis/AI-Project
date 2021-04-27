@@ -14,7 +14,9 @@ def _sigmoid_derivative(x):
 class NeuralNetwork:
     def __init__(self, learning_rate_p):
         # Initialize random values for the weights and bias and set the learning rate.
-        self.weights = np.array([np.random.randn(), np.random.randn()])
+        self.weights = np.array([0] * len(inputVectors[0]))
+        for j in range(len(self.weights)):
+            self.weights[j] = np.random.randn()
         self.bias = np.random.randn()
         self.learning_rate = learning_rate_p
 
@@ -55,7 +57,7 @@ class NeuralNetwork:
     def train(self, _input_vectors, _targets, iterations):
         cumulative_errors = []
         for current_iteration in range(iterations):
-            # Pick a data instance at random.
+            # Pick a inputVectors instance at random.
             random_data_index = np.random.randint(len(_input_vectors))
 
             input_vector = _input_vectors[random_data_index]
@@ -68,6 +70,8 @@ class NeuralNetwork:
 
             # Measure the cumulative error for all the instances.
             if current_iteration % 100 == 0:
+                print(f'{(current_iteration / iterations) * 100}% done.')
+
                 cumulative_error = 0
                 # Loop through all the instances to measure the error.
                 for data_instance_index in range(len(_input_vectors)):
@@ -85,15 +89,31 @@ class NeuralNetwork:
 
 book = xlrd.open_workbook("dataWorkbook.xls")
 sheet = book.sheet_by_name("tracks")
-data = [[sheet.cell_value(r, c) for c in range(sheet.ncols)] for r in range(sheet.nrows)]
-print(data)
-input_vectors = [[4, 5], [4, 6], [5, 4], [3, 7], [7, 3], [8, 4], [6, 4], [0, 9], [8, 0], [4, 6], [8, 4], [8, 9], [7, 3],
-                 [5, 4], [7, 8], [8, 9], [9, 6], [0, 4], [7, 0], [0, 0], [5, 5]]
-targets = [0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1]
+inputVectors = [[sheet.cell_value(r, c) for c in range(1, sheet.ncols)] for r in range(1, sheet.nrows)]
+for i in range(len(inputVectors)):
+    inputVectors[i][0] = inputVectors[i][0] / 3650800  # Duration Normalization
+    # Explicitness already normalized.
+    # Danceability already normalized.
+    # Energy already normalized.
+    inputVectors[i][4] = inputVectors[i][4] / 11  # Key normalization
+    inputVectors[i][5] = (inputVectors[i][5] + 60) / 65  # Loudness normalization
+    # Mode already normalized.
+    # Speechiness already normalized.
+    # Acousticness already normalized.
+    # Instrumentalness already normalized.
+    # Liveliness already normalized.
+    # Valence already normalized.
+    inputVectors[i][12] = inputVectors[i][12] / 245  # Tempo normalization
+    inputVectors[i][13] = inputVectors[i][13] / 5  # Time Signature normalization
+targets = [(sheet.cell_value(r, 0)) for r in range(1, sheet.nrows)]
+for i in range(len(targets)):
+    targets[i] = targets[i] / 86
+
 learning_rate = 0.1
 neural_network = NeuralNetwork(learning_rate)
-training_error = neural_network.train(input_vectors, targets, 100000)
-print(neural_network.predict([6, 5]))
+training_error = neural_network.train(inputVectors, targets, 100000)
+print(
+    f'Prediction is: {neural_network.predict([126903 / 3650800, 0, 0.645, 0.445, 0, (-13.338 + 60) / 65, 1, 0.451, 0.674, 0.744, 0.151, 0.127, 104.851 / 245, 3 / 5])}')
 
 plt.plot(training_error)
 plt.xlabel("Iterations")
