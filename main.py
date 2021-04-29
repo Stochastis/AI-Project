@@ -111,31 +111,39 @@ for i in range(len(targets)):
 
 learning_rate = 0.01
 neural_network = NeuralNetwork(learning_rate)
-training_error = neural_network.train(inputVectors, targets, 100000)
+training_error = neural_network.train(inputVectors, targets, 10000)
 plt.plot(training_error)
 plt.xlabel("Iterations")
 plt.ylabel("Error for all training instances")
 plt.savefig("cumulative_error.png")
 
-doContinue = 1
-while doContinue == 1:
-    userDuration = float(input('What is the duration of the song in milliseconds? (0 to 3650800)')) / 3650800
-    userExplicit = float(input('What is the explicitness of the song? (0 or 1)'))
-    userDanceability = float(input('What is the danceability of the song? (0 to 1)'))
-    userEnergy = float(input('What is the energy of the song? (0 to 1)'))
-    userKey = float(input('What is the key of the song? (0 to 11)')) / 11
-    userLoudness = (float(input('What is the loudness of the song? (-60 to 5)')) + 60) / 65
-    userMode = float(input('What is the mode of the song? (0 or 1)'))
-    userSpeechiness = float(input('What is the speechiness of the song? (0 to 1)'))
-    userAcousticness = float(input('What is the acousticness of the song? (0 to 1)'))
-    userInstrumentalness = float(input('What is the instrumentalness of the song? (0 to 1)'))
-    userLiveliness = float(input('What is the liveliness of the song? (0 to 1)'))
-    userValence = float(input('What is the valence of the song? (0 to 1)'))
-    userTempo = float(input('What is the tempo of the song? (0 to 245)')) / 245
-    userTimeSignature = float(input('What is the time signature of the song? (1 to 5)')) / 5
-    userInput = [userDuration, userExplicit, userDanceability, userEnergy, userKey, userLoudness, userMode,
-                 userSpeechiness,
-                 userAcousticness, userInstrumentalness, userLiveliness, userValence, userTempo, userTimeSignature]
-    userPrediction = neural_network.predict(userInput)
-    print(f'Popularity prediction is: {userPrediction * 86}')
-    doContinue = int(input('Enter 1 to continue or 0 to stop.'))
+while True:
+    doContinue = int(input('Enter 2 to train, 1 to continue, or 0 to stop.'))
+    if doContinue == 2:
+        training_error = neural_network.train(inputVectors, targets, 10000)
+        plt.plot(training_error)
+        plt.xlabel("Iterations")
+        plt.ylabel("Error for all training instances")
+        plt.savefig("cumulative_error.png")
+    elif doContinue == 1:
+        userDuration = float(input('What is the duration of the song in milliseconds? (0 to 3650800)')) / 3650800
+        userExplicit = float(input('What is the explicitness of the song? (0 or 1)'))
+        userDanceability = float(input('What is the danceability of the song? (0 to 1)'))
+        userEnergy = float(input('What is the energy of the song? (0 to 1)'))
+        userKey = float(input('What is the key of the song? (0 to 11)')) / 11
+        userLoudness = (float(input('What is the loudness of the song? (-60 to 5)')) + 60) / 65
+        userMode = float(input('What is the mode of the song? (0 or 1)'))
+        userSpeechiness = float(input('What is the speechiness of the song? (0 to 1)'))
+        userAcousticness = float(input('What is the acousticness of the song? (0 to 1)'))
+        userInstrumentalness = float(input('What is the instrumentalness of the song? (0 to 1)'))
+        userLiveliness = float(input('What is the liveliness of the song? (0 to 1)'))
+        userValence = float(input('What is the valence of the song? (0 to 1)'))
+        userTempo = float(input('What is the tempo of the song? (0 to 245)')) / 245
+        userTimeSignature = float(input('What is the time signature of the song? (1 to 5)')) / 5
+        userInput = [userDuration, userExplicit, userDanceability, userEnergy, userKey, userLoudness, userMode,
+                     userSpeechiness,
+                     userAcousticness, userInstrumentalness, userLiveliness, userValence, userTempo, userTimeSignature]
+        userPrediction = neural_network.predict(userInput)
+        print(f'Popularity prediction is: {userPrediction * 86}')
+    else:
+        exit()
